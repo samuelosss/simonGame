@@ -296,11 +296,12 @@ function compare() {
 	sliceNew = playerGamePattern.slice();
 	if (sliceOld.toString() === sliceNew.toString()) {
 		// cannot just === compare, needs to string them
-		// ERROR function/s
-		console.log("YES continue!");
-	} else {
 		//CONTINUE playing / clicking
 		// loop needed until length of two arrays equals, then NEW LEVEL
+		console.log("YES continue!");
+	} else {
+		// ERROR function/s
+
 		console.log("ERROR maybe next time! ;)");
 	}
 }
