@@ -83,6 +83,144 @@
 //   audio.play();
 //but I need to figure out HOW TO PLAY DIFFERENT SOUNDS FOR DIFFERENT COLOR BUTTONS
 
+// function playSounds(color) {
+// 	switch (color) {
+// 		case "green":
+// 			var soundGreen = new Audio("./sounds/green.mp3");
+// 			soundGreen.play();
+// 			break;
+// 		case "red":
+// 			var soundRed = new Audio("./sounds/red.mp3");
+// 			soundRed.play();
+// 			break;
+// 		case "blue":
+// 			var soundBlue = new Audio("./sounds/blue.mp3");
+// 			soundBlue.play();
+// 			break;
+// 		case "yellow":
+// 			var soundYellow = new Audio("./sounds/yellow.mp3");
+// 			soundYellow.play();
+// 			break;
+// 		case "error":
+// 			var soundError = new Audio("./sounds/wrong.mp3");
+// 			soundError.play();
+// 			break;
+// 		default:
+// 			alert("Some problem with sound function?");
+// 			break;
+// 	}
+// }
+
+// $(".btn").click(function () {
+// 	playSounds(this.id);
+// });
+
+//ok, doing it my way:
+// var gamePattern = []; //null
+// var buttonColours = ["green", "red", "yellow", "blue"];
+// var randomChosenColour = null;
+
+// function nextSequence() {
+// 	var randomNumber = Math.floor(Math.random() * 4);
+// 	randomChosenColour = buttonColours[randomNumber];
+// 	addRandColorToPattern();
+// 	// return randomNumber;
+// }
+
+// function addRandColorToPattern() {
+// 	gamePattern.push(randomChosenColour);
+// }
+
+//PAUSED
+//adding button functions together adding clicked color to gamepattern
+// $(".btn").on("click", function () {
+// 	// Toggle the class to "pressed" on click
+// 	$(this).toggleClass("pressed");
+// 	// Set a timeout to toggle it back after 100ms
+// 	setTimeout(() => {
+// 		$(this).toggleClass("pressed");
+// 	}, 100);
+// 	playSounds(this.id);
+// 	gamePattern.push(this.id); // add color to the array
+// 	console.log(gamePattern);
+// });
+//PAUSED
+
+//add random color to the original array when LEVEL UP and do "play" section
+
+//create new array playerGamePattern
+
+//after each click compare original gamePattern and playerGamePattern if they match so far, when comes to an end, do LEVEL UP
+//this has to be separate section
+
+//when arrays compared don't match, do ERROR (messsage, keystroke to begin new game, play sound)
+
+// //new pattern
+// var playerGamePattern = [];
+
+// $(".btn").on("click", function () {
+// 	// Toggle the class to "pressed" on click
+// 	$(this).toggleClass("pressed");
+// 	// Set a timeout to toggle it back after 100ms
+// 	setTimeout(() => {
+// 		$(this).toggleClass("pressed");
+// 	}, 100);
+// 	playSounds(this.id);
+// 	playerGamePattern.push(this.id); // add color to the array
+// 	console.log(playerGamePattern);
+// });
+
+// //length of new pattern
+// var lengthPlayerGamePattern = playerGamePattern.length;
+
+// //slices of old and new patterns
+// var sliceOld = gamePattern.slice();
+// var sliceNew = playerGamePattern.slice();
+
+// //compare them
+// function compare() {
+// 	lengthPlayerGamePattern = playerGamePattern.length;
+// 	sliceOld = gamePattern.slice(0, lengthPlayerGamePattern);
+// 	sliceNew = playerGamePattern.slice();
+// 	if (sliceOld.toString() === sliceNew.toString()) {
+// 		// ERROR function/s
+// 		console.log("YES continue!");
+// 	} else {
+// 		//CONTINUE playing / clicking
+// 		console.log("ERROR maybe next time! ;)");
+// 	}
+// }
+
+function errorEnd() {
+	// sound ERROR sound
+	playSounds("error");
+	//change H1 "Press a Key to Start"
+	$("h1#level-title").html("Press A Key to Start");
+	//go to function start new game
+}
+
+var levelNumber = "";
+
+//new game start
+function newGame() {
+	$(document).keypress(function () {
+		levelNumber = 0;
+		$("h1#level-title").html("Level " + levelNumber);
+	});
+	setTimeout(function () //wait and chose random color and flick and beep
+	{
+		nextSequence();
+		playSounds(randomChosenColour);
+		$("#" + randomChosenColour).toggleClass("pressed"); //flick
+		setTimeout(function () {
+			$("#" + randomChosenColour).toggleClass("pressed");
+		}, 100); //flick back
+	}, 1300);
+}
+
+//now let's try to put it together
+
+//define sounds funtion
 function playSounds(color) {
 	switch (color) {
 		case "green":
@@ -111,38 +249,58 @@ function playSounds(color) {
 	}
 }
 
-// $(".btn").click(function () {
-// 	playSounds(this.id);
-// });
-
-//after ERROR new start by key stroke
-function keyToStart() {}
-
-//ok, doing it my way:
+//basic vars
 var gamePattern = []; //null
 var buttonColours = ["green", "red", "yellow", "blue"];
 var randomChosenColour = null;
 
-function nextSequence() {
-	var randomNumber = Math.floor(Math.random() * 4);
-	randomChosenColour = buttonColours[randomNumber];
-	addRandColorToPattern();
-	// return randomNumber;
-}
-
+//define adding to first game array when random runs - creating randomised pattern
 function addRandColorToPattern() {
 	gamePattern.push(randomChosenColour);
 }
 
-//adding button functions together adding clicked color to gamepattern
+// random color
+function nextSequence() {
+	var randomNumber = Math.floor(Math.random() * 4); // define random number 1-4
+	randomChosenColour = buttonColours[randomNumber]; // pick color on defined number
+	addRandColorToPattern();
+}
+
+// pattern created by player clicking buttons
+var playerGamePattern = [];
+
 $(".btn").on("click", function () {
-	// Toggle the class to "myNewClass" on click
+	// Toggle the class to "pressed" on click
 	$(this).toggleClass("pressed");
 	// Set a timeout to toggle it back after 100ms
 	setTimeout(() => {
 		$(this).toggleClass("pressed");
 	}, 100);
 	playSounds(this.id);
-	gamePattern.push(this.id);
-	console.log(gamePattern);
+	playerGamePattern.push(this.id); // add color to the player array
+	console.log(playerGamePattern); //just checking
 });
+
+////Patterns comparison
+//length of new pattern
+var lengthPlayerGamePattern = playerGamePattern.length;
+
+//slices of old and new patterns
+var sliceOld = gamePattern.slice();
+var sliceNew = playerGamePattern.slice();
+
+//compare them
+function compare() {
+	lengthPlayerGamePattern = playerGamePattern.length;
+	sliceOld = gamePattern.slice(0, lengthPlayerGamePattern);
+	sliceNew = playerGamePattern.slice();
+	if (sliceOld.toString() === sliceNew.toString()) {
+		// cannot just === compare, needs to string them
+		// ERROR function/s
+		console.log("YES continue!");
+	} else {
+		//CONTINUE playing / clicking
+		// loop needed until length of two arrays equals, then NEW LEVEL
+		console.log("ERROR maybe next time! ;)");
+	}
+}
