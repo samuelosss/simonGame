@@ -270,7 +270,7 @@ function nextSequence() {
 // pattern created by player clicking buttons
 var playerGamePattern = [];
 
-function whichColorButton() {
+function pressColorButton() {
 	$(".btn").on("click", function () {
 		// Toggle the class to "pressed" on click
 		$(this).toggleClass("pressed");
@@ -312,7 +312,7 @@ function compare() {
 		// cannot just === compare, needs to string them
 		//CONTINUE playing / clicking
 		// loop needed until length of two arrays equals, then NEW LEVEL
-		whichColorButton();
+		pressColorButton();
 		console.log("YES continue!");
 	} else {
 		// ERROR function/s
@@ -340,4 +340,4 @@ function newGame() {
 }
 
 newGame();
-whichColorButton();
+// pressColorButton();
