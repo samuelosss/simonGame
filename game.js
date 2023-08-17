@@ -191,34 +191,35 @@
 // 	}
 // }
 
-function errorEnd() {
-	// sound ERROR sound
-	playSounds("error");
-	//change H1 "Press a Key to Start"
-	$("h1#level-title").html("Press A Key to Start");
-	//go to function start new game
-}
+// function errorEnd() {
+// 	// sound ERROR sound
+// 	playSounds("error");
+// 	//change H1 "Press a Key to Start"
+// 	$("h1#level-title").html("Press A Key to Start");
+// 	//go to function start new game
+// }
 
-var levelNumber = "";
+// var levelNumber = "";
 
-//new game start
-function newGame() {
-	$(document).keypress(function () {
-		levelNumber = 0;
-		$("h1#level-title").html("Level " + levelNumber);
-	});
-	setTimeout(function () //wait and chose random color and flick and beep
-	{
-		nextSequence();
-		playSounds(randomChosenColour);
-		$("#" + randomChosenColour).toggleClass("pressed"); //flick
-		setTimeout(function () {
-			$("#" + randomChosenColour).toggleClass("pressed");
-		}, 100); //flick back
-	}, 1300);
-}
+// //new game start
+// function newGame() {
+// 	$(document).keypress(function () {
+// 		levelNumber = 0;
+// 		$("h1#level-title").html("Level " + levelNumber);
+// 	});
+// 	setTimeout(function () //wait and chose random color and flick and beep
+// 	{
+// 		nextSequence();
+// 		playSounds(randomChosenColour);
+// 		$("#" + randomChosenColour).toggleClass("pressed"); //flick
+// 		setTimeout(function () {
+// 			$("#" + randomChosenColour).toggleClass("pressed");
+// 		}, 100); //flick back
+// 	}, 1300);
+// }
 
-//now let's try to put it together
+//now let's try to put it together /////////////////
+///////////////////////
 
 //define sounds funtion
 function playSounds(color) {
@@ -269,17 +270,30 @@ function nextSequence() {
 // pattern created by player clicking buttons
 var playerGamePattern = [];
 
-$(".btn").on("click", function () {
-	// Toggle the class to "pressed" on click
-	$(this).toggleClass("pressed");
-	// Set a timeout to toggle it back after 100ms
-	setTimeout(() => {
+function whichColorButton() {
+	$(".btn").on("click", function () {
+		// Toggle the class to "pressed" on click
 		$(this).toggleClass("pressed");
-	}, 100);
-	playSounds(this.id);
-	playerGamePattern.push(this.id); // add color to the player array
-	console.log(playerGamePattern); //just checking
-});
+		// Set a timeout to toggle it back after 100ms
+		setTimeout(() => {
+			$(this).toggleClass("pressed");
+		}, 100);
+		playSounds(this.id);
+		playerGamePattern.push(this.id); // add color to the player array
+		compare(); // comparison of arrays
+		console.log(playerGamePattern); //just checking
+	});
+}
+
+function errorEnd() {
+	// sound ERROR sound
+	playSounds("error");
+	//change H1 "Press a Key to Start"
+	$("h1#level-title").html("Press A Key to Start");
+	//go to function start new game
+}
+
+var levelNumber = "";
 
 ////Patterns comparison
 //length of new pattern
@@ -298,10 +312,32 @@ function compare() {
 		// cannot just === compare, needs to string them
 		//CONTINUE playing / clicking
 		// loop needed until length of two arrays equals, then NEW LEVEL
+		whichColorButton();
 		console.log("YES continue!");
 	} else {
 		// ERROR function/s
-
+		errorEnd();
+		newGame();
 		console.log("ERROR maybe next time! ;)");
 	}
 }
+
+//new game start
+function newGame() {
+	$(document).keypress(function () {
+		levelNumber = 0;
+		$("h1#level-title").html("Level " + levelNumber);
+	});
+	setTimeout(function () //wait and chose random color and flick and beep
+	{
+		nextSequence();
+		playSounds(randomChosenColour);
+		$("#" + randomChosenColour).toggleClass("pressed"); //flick
+		setTimeout(function () {
+			$("#" + randomChosenColour).toggleClass("pressed");
+		}, 100); //flick back
+	}, 1300);
+}
+
+newGame();
+whichColorButton();
