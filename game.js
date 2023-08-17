@@ -340,4 +340,4 @@ function newGame() {
 }
 
 newGame();
-// pressColorButton();
+pressColorButton();
