@@ -339,5 +339,5 @@ function newGame() {
 	}, 1300);
 }
 
-newGame();
-pressColorButton();
+// newGame();
+// pressColorButton();
