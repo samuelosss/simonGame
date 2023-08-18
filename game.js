@@ -271,7 +271,7 @@ function nextSequence() {
 var playerGamePattern = [];
 
 function pressColorButton() {
-	$(".btn").on("click", function () {
+	$(".btn").on("click touchstart", function () {
 		// Toggle the class to "pressed" on click
 		$(this).toggleClass("pressed");
 		// Set a timeout to toggle it back after 100ms
@@ -288,18 +288,24 @@ function pressColorButton() {
 function errorEnd() {
 	// sound ERROR sound
 	playSounds("error");
-	//change H1 "Press a Key to Start"
-	// $("h1#level-title").html("Press A Key to Start");
-	playerGamePattern = [];
-	gamePattern = [];
-	randomChosenColour = [];
-	levelNumber = [];
+	//screen flicker"
+	$("body").toggleClass("game-over"); //flick
+	setTimeout(function () {
+		$("body").toggleClass("game-over");
+	}, 300); //flick back
+
+	// clear vars
+	// playerGamePattern = [];
+	// gamePattern = [];
 
 	//go to function start new game
 	newGame();
+
+	//DEBUG PROBLEM HENCE:
+	reloadPage();
 }
 
-var levelNumber = "";
+var levelNumber = 1;
 
 ////Patterns comparison
 //length of new pattern
@@ -336,13 +342,13 @@ function compare1() {
 	// }
 }
 
-//new game start
+//NEW GAME start
 function newGame() {
 	gamePattern = [];
 	playerGamePattern = [];
 	levelNumber = 1;
 	$("h1#level-title").html("Press A Key to Start");
-	$(document).one("keypress", function () {
+	$(document).one("keypress touchstart", function () {
 		//press only one time!! .one()
 		$("h1#level-title").html("Level " + levelNumber);
 		pressColorButton();
@@ -358,16 +364,6 @@ function newGame() {
 		}, 1300);
 	});
 }
-
-// setup the page, create empty array, wait for key press
-//startgame fn
-
-// function colorPickLoop() {
-// 	for (var i = playerGamePattern; i <= gamePattern.length; i++) {
-// 		compare(); //if else to ERROR
-// 		console.log(i);
-// 	}
-// }
 
 //LEVEL UP
 
@@ -385,8 +381,14 @@ function newLevel() {
 				$("#" + randomChosenColour).toggleClass("pressed");
 			}, 100); //flick back
 			console.log(gamePattern);
-		}, 500);
+		}, 400);
 	}, 1000);
 }
 
 newGame();
+
+//STUCK IN DEBUGGING - after error and starting new game in one session, it bugs after first click
+// and duplicates clicks or something, temporarily, I will try to reload window for each game start
+function reloadPage() {
+	window.location.reload();
+}
