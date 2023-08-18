@@ -271,7 +271,7 @@ function nextSequence() {
 var playerGamePattern = [];
 
 function pressColorButton() {
-	$(".btn").on("click touchend", function () {
+	$(".btn").on("click", function () {
 		// Toggle the class to "pressed" on click
 		$(this).toggleClass("pressed");
 		// Set a timeout to toggle it back after 100ms
@@ -299,10 +299,12 @@ function errorEnd() {
 	// gamePattern = [];
 
 	//go to function start new game
-	newGame();
+	// newGame();
 
 	//DEBUG PROBLEM HENCE:
-	reloadPage();
+	setTimeout(function () {
+		reloadPage();
+	}, 500);
 }
 
 var levelNumber = 1;
@@ -348,7 +350,7 @@ function newGame() {
 	playerGamePattern = [];
 	levelNumber = 1;
 	$("h1#level-title").html("Press A Key to Start");
-	$(document).one("keypress touchend", function () {
+	$(document).one("click", function () {
 		//press only one time!! .one()
 		$("h1#level-title").html("Level " + levelNumber);
 		pressColorButton();
